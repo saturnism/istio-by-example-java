@@ -53,10 +53,6 @@ public class IstioHttpSpanInjector implements HttpSpanInjector {
       }
       carrier.put(prefixedKey(entry.getKey()), entry.getValue());
     }
-
-    for (Map.Entry<String, String> entry : carrier) {
-      log.info( entry.getKey() + " = " + entry.getValue());
-    }
   }
 
   private String prefixedKey(String key) {
