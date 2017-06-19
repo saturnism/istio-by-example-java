@@ -31,12 +31,11 @@
  */
 package com.example.guestbook;
 
-import com.example.istio.IstioHttpSpanExtractor;
-import com.example.istio.IstioHttpSpanInjector;
+import com.example.istio.HeaderPropagationClientHttpRequestInterceptor;
+import com.example.istio.HeaderPropagationRequestFilter;
+import com.example.istio.IstioHeaderPropagatoinRequestFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanExtractor;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -49,7 +48,6 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 /**
  * Created by rayt on 5/1/17.
@@ -58,8 +56,15 @@ import java.util.regex.Pattern;
 @EnableRedisHttpSession
 public class ApplicationConfig {
   @Bean
+  HeaderPropagationRequestFilter headerPropagationRequestFilter() {
+    return new IstioHeaderPropagatoinRequestFilter();
+  }
+
+  @Bean
   RestTemplate restTemplate() {
-    return new RestTemplate();
+    RestTemplate restTemplate = new RestTemplate();
+    restTemplate.getInterceptors().add(new HeaderPropagationClientHttpRequestInterceptor());
+    return restTemplate;
   }
 
   @Bean
@@ -92,15 +97,4 @@ public class ApplicationConfig {
 
     return factory;
   }
-
-  @Bean
-  HttpSpanInjector istioHttpSpanInjector() {
-    return new IstioHttpSpanInjector();
-  }
-
-  @Bean
-  HttpSpanExtractor istioHttpSpanExtractor() {
-    return new IstioHttpSpanExtractor();
-  }
-
 }

@@ -31,6 +31,8 @@
  */
 package com.example.guestbook;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
@@ -60,17 +62,28 @@ public class GuestbookService {
   }
 
   public List<Map> all() {
-    Map response = restTemplate.getForObject(endpoint, Map.class);
+    try {
+      Map response = restTemplate.getForObject(endpoint, Map.class);
 
-    Map embedded = (Map) response.get("_embedded");
-    List<Map> messages = (List<Map>) embedded.get("messages");
-    return messages.stream()
-        .filter(message -> message.containsKey("_links"))
-        .map(message -> (Map) message.get("_links"))
-        .filter(links -> links.containsKey("self"))
-        .map(links -> (Map) links.get("self"))
-        .map(self -> (String) self.get("href"))
-        .map(href -> restTemplate.getForObject(href, Map.class))
-        .collect(Collectors.toList());
+      Map embedded = (Map) response.get("_embedded");
+      List<Map> messages = (List<Map>) embedded.get("messages");
+      return messages.stream()
+          .filter(message -> message.containsKey("_links"))
+          .map(message -> (Map) message.get("_links"))
+          .filter(links -> links.containsKey("self"))
+          .map(links -> (Map) links.get("self"))
+          .map(self -> (String) self.get("href"))
+          .map(href -> restTemplate.getForObject(href, Map.class))
+          .collect(Collectors.toList());
+    } catch (HttpStatusCodeException e) {
+      if (e.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
+        Map<String, String> bulkheadEntry = new HashMap<>();
+        bulkheadEntry.put("username", "system");
+        bulkheadEntry.put("message", "Guestbook Service is currenctly unavailable");
+        return Arrays.asList(bulkheadEntry);
+      } else {
+        throw e;
+      }
+    }
   }
 }

@@ -31,9 +31,17 @@
  */
 package com.example.guestbook;
 
+import io.github.resilience4j.bulkhead.Bulkhead;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Created by rayt on 5/1/17.
@@ -41,6 +49,10 @@ import java.util.Map;
 public class HelloworldService {
   private final RestTemplate restTemplate;
   private final String endpoint;
+  private static final Map<String, String> BULHEAD_RESPONSE = new HashMap<>();
+  static {
+    BULHEAD_RESPONSE.put("greeting", "Unable to connect");
+  }
 
   public HelloworldService(RestTemplate restTemplate, String endpoint) {
     this.restTemplate = restTemplate;
@@ -48,6 +60,14 @@ public class HelloworldService {
   }
 
   public Map<String, String> greeting(String name) {
-    return restTemplate.getForObject(endpoint + "/" + name, Map.class);
+    try {
+      return restTemplate.getForObject(endpoint + "/" + name, Map.class);
+    } catch (HttpStatusCodeException e) {
+      if (e.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
+        return BULHEAD_RESPONSE;
+      } else {
+        throw e;
+      }
+    }
   }
 }
