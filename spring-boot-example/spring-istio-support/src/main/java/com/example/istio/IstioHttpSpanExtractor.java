@@ -109,8 +109,10 @@ public class IstioHttpSpanExtractor implements HttpSpanExtractor {
 
     String requestId = carrier.get(IstioTraceHeaderNames.REQUEST_ID_HEADER);
     String spanContext = carrier.get(IstioTraceHeaderNames.SPAN_CONTEXT_HEADER);
+    String userAgent = carrier.get(IstioTraceHeaderNames.USER_AGENT);
     span.baggage(IstioTraceHeaderNames.REQUEST_ID_HEADER, requestId);
     span.baggage(IstioTraceHeaderNames.SPAN_CONTEXT_HEADER, spanContext);
+    span.baggage(IstioTraceHeaderNames.USER_AGENT, userAgent);
 
     Span spanInstance = span.build();
     return spanInstance;

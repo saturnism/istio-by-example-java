@@ -22,7 +22,8 @@ package com.example.istio;
 public final class IstioTraceHeaderNames {
   public static String REQUEST_ID_HEADER = "X-Request-Id";
   public static String SPAN_CONTEXT_HEADER = "X-OT-Span-Context";
-
+  public static String USER_AGENT = "user-agent";
+  
   // Other headers are defined in Span already
 
   private IstioTraceHeaderNames() {}
