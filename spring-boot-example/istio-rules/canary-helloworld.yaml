@@ -5,8 +5,8 @@ spec:
   destination: helloworld-service.default.svc.cluster.local
   match:
     httpHeaders:
-      foo:
-        exact: bar
+      user-agent:
+        exact: mobile
   precedence: 2
   route:
     - tags:
