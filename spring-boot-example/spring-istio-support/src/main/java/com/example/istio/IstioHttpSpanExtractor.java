@@ -70,6 +70,7 @@ public class IstioHttpSpanExtractor implements HttpSpanExtractor {
   }
 
   private Span buildParentSpan(Map<String, String> carrier, String uri, boolean skip, long spanId) {
+    log.debug("carrier map:" + carrier.toString());
     String traceId = carrier.get(Span.TRACE_ID_NAME);
     Span.SpanBuilder span = Span.builder()
         .traceIdHigh(traceId.length() == 32 ? Span.hexToId(traceId, 0) : 0)
@@ -88,7 +89,10 @@ public class IstioHttpSpanExtractor implements HttpSpanExtractor {
       span.processId(processId);
     }
     if (carrier.containsKey(Span.PARENT_ID_NAME)) {
-      span.parent(Span.hexToId(carrier.get(Span.PARENT_ID_NAME)));
+      String hexString = carrier.get(Span.PARENT_ID_NAME);
+      if ((hexString != null) && (hexString != "")) {
+        span.parent(Span.hexToId(hexString));
+      }
     }
     span.remote(true);
     boolean debug = Span.SPAN_SAMPLED.equals(carrier.get(Span.SPAN_FLAGS));
@@ -105,8 +109,10 @@ public class IstioHttpSpanExtractor implements HttpSpanExtractor {
 
     String requestId = carrier.get(IstioTraceHeaderNames.REQUEST_ID_HEADER);
     String spanContext = carrier.get(IstioTraceHeaderNames.SPAN_CONTEXT_HEADER);
+    String userAgent = carrier.get(IstioTraceHeaderNames.USER_AGENT);
     span.baggage(IstioTraceHeaderNames.REQUEST_ID_HEADER, requestId);
     span.baggage(IstioTraceHeaderNames.SPAN_CONTEXT_HEADER, spanContext);
+    span.baggage(IstioTraceHeaderNames.USER_AGENT, userAgent);
 
     Span spanInstance = span.build();
     return spanInstance;

@@ -74,7 +74,7 @@
 				<plugin>
 					<groupId>com.spotify</groupId>
 					<artifactId>dockerfile-maven-plugin</artifactId>
-					<version>1.3.0</version>
+					<version>1.3.5</version>
 					<configuration>
 						<repository>${docker.image.prefix}/${project.artifactId}-istio</repository>
             <tag>latest</tag>

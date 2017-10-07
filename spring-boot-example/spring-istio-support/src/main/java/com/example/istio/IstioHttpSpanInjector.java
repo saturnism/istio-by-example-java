@@ -45,6 +45,7 @@ public class IstioHttpSpanInjector implements HttpSpanInjector {
     setHeader(carrier, Span.PROCESS_ID_NAME, span.getProcessId());
     setHeader(carrier, IstioTraceHeaderNames.REQUEST_ID_HEADER, span.getBaggageItem(IstioTraceHeaderNames.REQUEST_ID_HEADER));
     setHeader(carrier, IstioTraceHeaderNames.SPAN_CONTEXT_HEADER, span.getBaggageItem(IstioTraceHeaderNames.SPAN_CONTEXT_HEADER));
+    setHeader(carrier, IstioTraceHeaderNames.USER_AGENT, span.getBaggageItem(IstioTraceHeaderNames.USER_AGENT));
     for (Map.Entry<String, String> entry : span.baggageItems()) {
       if (entry.getKey().equals(IstioTraceHeaderNames.REQUEST_ID_HEADER)) {
         continue;
