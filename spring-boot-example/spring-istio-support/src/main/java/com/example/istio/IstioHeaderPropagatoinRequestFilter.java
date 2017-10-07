@@ -27,7 +27,8 @@ public class IstioHeaderPropagatoinRequestFilter extends HeaderPropagationReques
       "x-b3-parentspanid",
       "x-b3-sampled",
       "x-b3-flags",
-      "x-ot-span-context"
+      "x-ot-span-context",
+      "user-agent"
   );
 
   public IstioHeaderPropagatoinRequestFilter() {
