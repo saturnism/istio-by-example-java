@@ -110,7 +110,7 @@
 	<modules>
 		<module>helloworld-service</module>
 		<module>guestbook-service</module>
-		<module>helloworld-ui</module>
+		<module>guestbook-ui</module>
 		<module>spring-istio-support</module>
 	</modules>
 </project>
