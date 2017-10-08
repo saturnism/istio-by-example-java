@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-  var graph_url = '/api/v1/namespaces/istio-system/services/servicegraph:http/proxy/graph';
+  var graph_url = '/api/v1/namespaces/istio-system/services/servicegraph:http/proxy/graph?time_horizon=30s&filter_empty=true';
 
   var sankey_options = {
     animation: {
@@ -16,6 +16,7 @@ jQuery(document).ready(function($) {
       node: {
         colors: [ '#a6cee3' ],
         width: 12,
+        nodePadding: 10,
         label: {
           fontSize: 12,
           color: '#4C84A2'
@@ -40,15 +41,21 @@ jQuery(document).ready(function($) {
 
       var rows = data.edges
         .filter(e => !e.source.startsWith('unknown'))
+//        .filter(e => !e.source.startsWith('ingress.istio-system'))
         .filter(e => !isNaN(e.labels['reqs/sec']))
 				.map(function(e) {
 					return [e.source, e.target, Number(e.labels['reqs/sec'])];
+//					return [e.source, e.target, 1];
 				})
         .filter(e => e[2] > 0);
-      console.log(rows);
-      table.addRows(rows);
 
-      chart.draw(table, sankey_options);
+      if (rows && rows.length > 0) {
+        table.addRows(rows);
+        table.sort([{column: 0}, {column: 1}]);
+        chart.draw(table, sankey_options);
+      }
+      console.log(rows);
+
     });
 
     $.when(request).then(function() {
