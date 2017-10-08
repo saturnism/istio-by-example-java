@@ -15,9 +15,9 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: helloworld-ui
+  name: guestbook-ui
   labels:
-    app: helloworld-ui
+    app: guestbook-ui
     visualize: "true"
 spec:
   ports:
@@ -25,5 +25,5 @@ spec:
       targetPort: 8080
       name: http
   selector:
-    app: helloworld-ui
+    app: guestbook-ui
     serving: "true"

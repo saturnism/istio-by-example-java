@@ -31,6 +31,10 @@
  */
 package com.example.guestbook;
 
+import io.vavr.control.Try;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -44,6 +48,7 @@ import java.util.stream.Collectors;
  * Created by rayt on 5/1/17.
  */
 public class GuestbookService {
+  private static final Log log = LogFactory.getLog(GuestbookService.class);
   private final RestTemplate restTemplate;
   private final String endpoint;
   private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -58,7 +63,16 @@ public class GuestbookService {
     payload.put("username", username);
     payload.put("message", message);
     payload.put("timestamp", dateFormat.format(new Date()));
+
+    // Istio can handle circuit breaking. Don't need to retry here.
     return restTemplate.postForObject(endpoint, payload, Map.class);
+  }
+
+  public List<Map> allFallback() {
+    Map<String, String> bulkheadEntry = new HashMap<>();
+    bulkheadEntry.put("username", "system");
+    bulkheadEntry.put("message", "Guestbook Service is currenctly unavailable");
+    return Arrays.asList(bulkheadEntry);
   }
 
   public List<Map> all() {
@@ -76,14 +90,10 @@ public class GuestbookService {
           .map(href -> restTemplate.getForObject(href, Map.class))
           .collect(Collectors.toList());
     } catch (HttpStatusCodeException e) {
-      if (e.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
-        Map<String, String> bulkheadEntry = new HashMap<>();
-        bulkheadEntry.put("username", "system");
-        bulkheadEntry.put("message", "Guestbook Service is currenctly unavailable");
-        return Arrays.asList(bulkheadEntry);
-      } else {
-        throw e;
-      }
+      // Istio would've performed circuit breaking and retries
+      // but it doesn't handle bulkheads / returning default values on full failures.
+      log.error("Error from Guestbook Service, falling back", e);
+      return allFallback();
     }
   }
 }

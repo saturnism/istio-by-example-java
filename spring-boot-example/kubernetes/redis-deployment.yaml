@@ -18,6 +18,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    version: "4.0.2"
     visualize: "true"
 spec:
   replicas: 1
@@ -29,7 +30,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis
+        image: redis:4.0.2
         livenessProbe:
           tcpSocket:
             port: 6379

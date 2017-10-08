@@ -1,0 +1,67 @@
+body {
+  font-family: helvetica;
+}
+
+.logo {
+  background: url('titlelogo.svg');
+  background-repeat: no-repeat;
+  height: 150px;
+  width: 600px;
+}
+
+.navbar-logo {
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+#nav-logo-img {
+  height: 42px;
+}
+
+.navbar {
+  position: absolute;
+  padding: 5px;
+  left: 0;
+  top: 0;
+  right: 0;
+  background-color: #447AE8;
+  border: 0px;
+  border-radius: 0;
+}
+
+.demo {
+  position: absolute;
+  padding: 5%;
+  left: 0;
+  right: 0;
+  top: 50px;
+  height: 100%;
+}
+
+span {
+  display: block;
+  font-size: 1.2em;
+  clear: left;
+  padding: 0.5em;
+}
+
+.pod {
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  float: left;
+}
+
+.running {
+  background-color: #297b48;
+}
+
+.pending {
+/*  background-color: #7bb992; */
+  background-color: #297b48;
+}
+
+.terminating {
+  background-color: #d47d6a;
+}

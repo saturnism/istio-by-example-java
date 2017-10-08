@@ -18,6 +18,7 @@ metadata:
   name: mysql
   labels:
     app: mysql
+    version: "5.6"
     visualize: "true"
 spec:
   replicas: 1

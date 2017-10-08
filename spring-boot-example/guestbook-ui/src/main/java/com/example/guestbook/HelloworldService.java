@@ -32,6 +32,8 @@
 package com.example.guestbook;
 
 import io.github.resilience4j.bulkhead.Bulkhead;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -47,27 +49,27 @@ import java.util.function.Supplier;
  * Created by rayt on 5/1/17.
  */
 public class HelloworldService {
+  private final static Log log = LogFactory.getLog(HelloworldService.class);
   private final RestTemplate restTemplate;
   private final String endpoint;
-  private static final Map<String, String> BULHEAD_RESPONSE = new HashMap<>();
-  static {
-    BULHEAD_RESPONSE.put("greeting", "Unable to connect");
-  }
 
   public HelloworldService(RestTemplate restTemplate, String endpoint) {
     this.restTemplate = restTemplate;
     this.endpoint = endpoint;
   }
 
+  public Map<String, String> greetingFallback() {
+    Map<String, String> response = new HashMap<>();
+    response.put("greeting", "Unable to connect");
+    return response;
+  }
+
   public Map<String, String> greeting(String name) {
     try {
       return restTemplate.getForObject(endpoint + "/" + name, Map.class);
     } catch (HttpStatusCodeException e) {
-      if (e.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
-        return BULHEAD_RESPONSE;
-      } else {
-        throw e;
-      }
+      log.error("Error from Helloworld Service, falling back", e);
+      return greetingFallback();
     }
   }
 }
