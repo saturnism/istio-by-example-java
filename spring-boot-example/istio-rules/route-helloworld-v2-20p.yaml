@@ -1,15 +1,15 @@
 apiVersion: config.istio.io/v1alpha2
 kind: RouteRule
 metadata:
-  name: helloworld-service-503
+  name: helloworld-service
 spec:
   destination:
     name: helloworld-service
-  precedence: 10
+  precedence: 1
   route:
   - labels:
       version: "1.0"
-  httpFault:
-    abort:
-      percent: 100
-      httpStatus: 503
+    weight: 80
+  - labels:
+      version: "2.0"
+    weight: 20
