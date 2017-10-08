@@ -18,7 +18,6 @@ metadata:
   name: redis
   labels:
     app: redis
-    version: "4.0.2"
     visualize: "true"
 spec:
   replicas: 1
@@ -26,6 +25,7 @@ spec:
     metadata:
       labels:
         app: redis
+        version: "4.0.2"
         visualize: "true"
     spec:
       containers:

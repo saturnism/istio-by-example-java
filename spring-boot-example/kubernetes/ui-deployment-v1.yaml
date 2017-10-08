@@ -15,35 +15,34 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: helloworld-service
+  name: guestbook-ui-v1
   labels:
-    app: helloworld-service
+    app: guestbook-ui
+    version: "1.0"
     visualize: "true"
 spec:
   replicas: 2
-  selector:
-    matchLabels:
-      app: helloworld-service
-      serving: "true"
   template:
     metadata:
       labels:
-        app: helloworld-service
-        version: "latest"
+        app: guestbook-ui
+        version: "1.0"
         serving: "true"
         visualize: "true"
+      annotations:
+        visualizer/uses: helloworld-service,guestbook-service,redis
     spec:
       containers:
-      - name: helloworld-service
-        image: saturnism/helloworld-service-istio:latest
+      - name: guestbook-ui
+        image: saturnism/guestbook-ui-istio:1.0
         livenessProbe:
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           httpGet:
             path: /health
             port: 8080
         readinessProbe:
           httpGet:
-            path: /hello/ready
+            path: /health
             port: 8080
         ports:
         - name: http
