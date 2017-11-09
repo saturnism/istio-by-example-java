@@ -15,10 +15,10 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: work-server-v1
+  name: work-server-latest
   labels:
     app: work-server
-    version: "1.0"
+    version: latest
     visualize: "true"
 spec:
   replicas: 2
@@ -27,7 +27,7 @@ spec:
       labels:
         app: work-server
         serving: "true"
-        version: "1.0"
+        version: latest
         visualize: "true"
     spec:
       containers:

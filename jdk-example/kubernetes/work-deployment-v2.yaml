@@ -15,24 +15,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: meeting-server-v1
+  name: work-server-v2
   labels:
-    app: meeting-server
-    version: "1.0"
+    app: work-server
+    version: "2.0"
     visualize: "true"
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: meeting-server
+        app: work-server
         serving: "true"
-        version: "1.0"
+        version: "2.0"
         visualize: "true"
     spec:
       containers:
-      - name: meeting-server
-        image: saturnism/meeting-server-istio:latest
+      - name: work-server
+        image: saturnism/work-server-istio:v2
+        env:
+        - name: ENDPOINT
+          value: http://meeting-server:8081/meet
         ports:
-        - containerPort: 8081
+        - containerPort: 8080
           name: http

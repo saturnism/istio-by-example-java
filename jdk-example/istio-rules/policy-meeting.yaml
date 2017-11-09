@@ -1,0 +1,16 @@
+apiVersion: config.istio.io/v1alpha2
+kind: DestinationPolicy
+metadata:
+  name: meeting-policy
+spec:
+  destination:
+    name: meeting-server
+  precedence: 1
+  loadBalancing:
+    name: ROUNDROBIN
+  circuitBreaker:
+    simpleCb:
+      maxConnections: 100
+      httpMaxRequests: 1000
+      httpConsecutiveErrors: 5
+      sleepWindow: 30s
