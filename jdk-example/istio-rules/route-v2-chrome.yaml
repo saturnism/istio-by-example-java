@@ -1,0 +1,16 @@
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: work-service
+spec:
+  destination:
+    name: work-service
+  precedence: 10
+  match:
+    request:
+      headers:
+        user-agent:
+          regex: ".*Chrome.*"
+  route:
+  - labels:
+      version: "2.0"
