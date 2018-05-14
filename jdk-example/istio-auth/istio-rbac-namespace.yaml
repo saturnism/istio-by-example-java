@@ -1,0 +1,27 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRole
+metadata:
+  name: work-server-viewer
+  namespace: default
+spec:
+  rules:
+  - services: ["*"]
+    methods: ["GET"]
+    constraints:
+    - key: "app"
+      values: ["work-server"]
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRoleBinding
+metadata:
+  name: work-server-viewer-binding
+  namespace: default
+spec:
+  subjects:
+  - properties:
+      namespace: default
+  - properties:
+      namespace: istio-system
+  roleRef:
+    kind: ServiceRole
+    name: work-server-viewer

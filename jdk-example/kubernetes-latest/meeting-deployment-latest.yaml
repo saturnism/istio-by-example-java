@@ -30,6 +30,7 @@ spec:
         version: latest
         visualize: "true"
     spec:
+      serviceAccountName: meeting-server
       containers:
       - name: meeting-server
         image: saturnism/meeting-server-istio:latest

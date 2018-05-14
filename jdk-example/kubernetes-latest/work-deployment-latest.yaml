@@ -30,6 +30,7 @@ spec:
         version: latest
         visualize: "true"
     spec:
+      serviceAccountName: work-server
       containers:
       - name: work-server
         image: saturnism/work-server-istio:latest
