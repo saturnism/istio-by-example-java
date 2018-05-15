@@ -1,0 +1,57 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: memquota
+metadata:
+  name: handler
+spec:
+  quotas:
+  - name: requestcount.quota.istio-system
+    maxAmount: 1000
+    validDuration: 1s
+    overrides:
+    - dimensions:
+        destination: meeting-server
+        source: work-server
+      maxAmount: 1
+      validDuration: 5s
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: quota
+metadata:
+  name: requestcount
+spec:
+  dimensions:
+    source: source.labels["app"] | source.service | "unknown"
+    sourceVersion: source.labels["version"] | "unknown"
+    destination: destination.labels["app"] | destination.service | "unknown"
+    destinationVersion: destination.labels["version"] | "unknown"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+  name: quota
+spec:
+  actions:
+  - handler: handler.memquota
+    instances:
+    - requestcount.quota
+---
+apiVersion: config.istio.io/v1alpha2
+kind: QuotaSpec
+metadata:
+  name: request-count
+spec:
+  rules:
+  - quotas:
+    - charge: 1
+      quota: RequestCount
+---
+apiVersion: config.istio.io/v1alpha2
+kind: QuotaSpecBinding
+metadata:
+  name: request-count
+spec:
+  quotaSpecs:
+  - name: request-count
+  services:
+  - name: meeting-server
+  - name: work-server
