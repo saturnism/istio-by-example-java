@@ -1,0 +1,36 @@
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: helloworld-service
+spec:
+  destination:
+    name: helloworld-service
+  precedence: 1
+  route:
+  - labels:
+      version: "1.0"
+---
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: guestbook-ui
+spec:
+  destination:
+    name: guestbook-ui
+  precedence: 1
+  route:
+  - labels:
+      version: "2.0"
+---
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: guestbook-service
+spec:
+  destination:
+    name: guestbook-service
+  precedence: 1
+  route:
+  - labels:
+      version: "1.0"
+
