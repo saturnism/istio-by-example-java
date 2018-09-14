@@ -56,7 +56,7 @@ public class WorkServer {
       HttpRequest request = builder.build();
 
       int meetings = 0;
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 8; i++) {
         try {
           HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandler.asString());
           if (response.statusCode() == 200) {
@@ -68,7 +68,7 @@ public class WorkServer {
 
       long end = System.currentTimeMillis();
 
-      String response = "Worked for " + (end - start) + "ms, attended " + meetings + " meetings at " + hostName + "\n";
+      String response = "Working REALLY HARD for " + (end - start) + "ms, attended " + meetings + " meetings at " + hostName + "\n";
       byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
       exchange.sendResponseHeaders(200, bytes.length);
       OutputStream os = exchange.getResponseBody();

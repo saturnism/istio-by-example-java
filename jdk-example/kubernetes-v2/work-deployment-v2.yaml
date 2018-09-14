@@ -33,6 +33,7 @@ spec:
       containers:
       - name: work-server
         image: saturnism/work-server-istio:v2
+        imagePullPolicy: Always
         env:
         - name: ENDPOINT
           value: http://meeting-server:8081/meet
