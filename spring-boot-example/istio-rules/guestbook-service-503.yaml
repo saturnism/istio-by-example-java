@@ -1,15 +1,16 @@
-apiVersion: config.istio.io/v1alpha2
-kind: RouteRule
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
 metadata:
-  name: guestbook-service-503
+  name: guestbook-service
 spec:
-  destination:
-    name: guestbook-service
-  precedence: 10
-  route:
-  - labels:
-      version: "1.0"
-  httpFault:
-    abort:
-      percent: 100
-      httpStatus: 503
+  hosts:
+  - guestbook-service
+  http:
+  - route:
+    - destination:
+        host: guestbook-service
+    fault:
+      abort:
+        percent: 100
+        httpStatus: 503
+
