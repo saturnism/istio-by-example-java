@@ -42,12 +42,14 @@ public class WorkServer {
       long start = System.currentTimeMillis();
 
       HttpClient httpClient = HttpClient.newHttpClient();
-      HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(endpoint)).GET();
+      HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(endpoint)).GET()
+			  .version(HttpClient.Version.HTTP_1_1)
+              .setHeader("User-Agent", "Java/9");
 
       Arrays.stream(TRACE_HEADERS).forEach(header -> {
         String value = exchange.getRequestHeaders().getFirst(header);
         if (value != null) {
-          builder.setHeader(header, value);
+          builder.header(header, value);
         }
       });
 
