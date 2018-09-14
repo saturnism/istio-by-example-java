@@ -16,17 +16,12 @@
 package com.example.jdk;
 
 import com.sun.net.httpserver.HttpServer;
-import jdk.incubator.http.HttpClient;
-import jdk.incubator.http.HttpRequest;
-import jdk.incubator.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 public class WorkServer {
@@ -41,34 +36,18 @@ public class WorkServer {
     server.createContext("/work", exchange -> {
       long start = System.currentTimeMillis();
 
-      HttpClient httpClient = HttpClient.newHttpClient();
-      HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(endpoint)).GET()
-			  .version(HttpClient.Version.HTTP_1_1)
-              .setHeader("User-Agent", "Java/9");
+      // Create a new HttpClient
+      // Create a new HttpRequest - set HTTP 1.1 and User Agent
 
-      Arrays.stream(TRACE_HEADERS).forEach(header -> {
-        String value = exchange.getRequestHeaders().getFirst(header);
-        if (value != null) {
-          builder.header(header, value);
-        }
-      });
-
-      HttpRequest request = builder.build();
+      // ADD Trace Headers!
 
       int meetings = 0;
-      for (int i = 0; i < 8; i++) {
-        try {
-          HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandler.asString());
-          if (response.statusCode() == 200) {
-            meetings++;
-          }
-        } catch (InterruptedException e) {
-        }
-      }
+
+      // Do some work!
 
       long end = System.currentTimeMillis();
 
-      String response = "Working REALLY HARD for " + (end - start) + "ms, attended " + meetings + " meetings at " + hostName + "\n";
+      String response = "Working for " + (end - start) + "ms, attended " + meetings + " meetings at " + hostName + "\n";
       byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
       exchange.sendResponseHeaders(200, bytes.length);
       OutputStream os = exchange.getResponseBody();
