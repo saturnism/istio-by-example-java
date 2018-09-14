@@ -14,3 +14,9 @@ spec:
     route:
     - destination:
         host: work-server
+        subset: v1
+      weight: 0
+    - destination:
+        host: work-server
+        subset: v2
+      weight: 100

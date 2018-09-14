@@ -1,0 +1,9 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: meeting-server
+spec:
+  host: meeting-server
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN

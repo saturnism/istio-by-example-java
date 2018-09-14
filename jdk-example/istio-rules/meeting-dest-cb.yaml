@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: meeting-server
+spec:
+  host: meeting-server
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        maxRequestsPerConnection: 10
+        http1MaxPendingRequests: 1024
+    outlierDetection:
+      http:
+        consecutiveErrors: 7
+        interval: 5m
+        baseEjectionTime: 15m
