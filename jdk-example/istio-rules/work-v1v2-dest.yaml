@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: work-server
+spec:
+  host: work-server
+  subsets:
+  - name: v1
+    labels:
+      version: "latest"
+  - name: v2
+    labels:
+      version: "2.0"
