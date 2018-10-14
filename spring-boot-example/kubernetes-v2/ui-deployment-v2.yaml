@@ -40,14 +40,17 @@ spec:
       containers:
       - name: guestbook-ui
         image: saturnism/guestbook-ui-istio:2.0
+        env:
+        - name: BACKEND_GUESTBOOK_SERVICE_URL
+          value: http://guestbook-service/messages
         livenessProbe:
           initialDelaySeconds: 60
           httpGet:
-            path: /health
+            path: /actuator/health
             port: 8080
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 8080
         ports:
         - name: http

@@ -44,9 +44,9 @@ spec:
         - name: GREETING
           value: "Hola $name from $hostname version $version"
         livenessProbe:
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           httpGet:
-            path: /health
+            path: /actuator/health
             port: 8080
         readinessProbe:
           httpGet:
