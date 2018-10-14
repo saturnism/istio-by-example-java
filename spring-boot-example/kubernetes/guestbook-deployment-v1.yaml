@@ -47,9 +47,6 @@ spec:
           httpGet:
             path: /
             port: 8080
-        env:
-        - name: BACKEND_GUESTBOOK_SERVICE_URL
-          value: http://guestbook-service/messages
         ports:
         - containerPort: 8080
           name: http
