@@ -6,9 +6,9 @@ metadata:
 spec:
   rules:
   - services: ["*"]
-    methods: ["GET"]
+    methods: ["GET", "HEAD"]
     constraints:
-    - key: "destination.labels[app]"
+    - key: "destination.name"
       values: ["guestbook-service", "helloworld-service", "guestbook-ui"]
 ---
 apiVersion: rbac.istio.io/v1alpha1
