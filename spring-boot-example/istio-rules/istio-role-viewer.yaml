@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   rules:
-  - services: ["guestbook-service", "helloworld-service", "guestbook-ui"]
+  - services: ["guestbook-service.default.svc.cluster.local", "helloworld-service.default.svc.cluster.local", "guestbook-ui.default.svc.cluster.local"]
     methods: ["GET", "HEAD"]
 ---
 apiVersion: rbac.istio.io/v1alpha1
