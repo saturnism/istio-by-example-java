@@ -31,15 +31,11 @@
  */
 package com.example.guestbook;
 
-import com.example.istio.IstioHttpSpanExtractor;
-import com.example.istio.IstioHttpSpanInjector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanExtractor;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanInjector;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,33 +46,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
-@Configuration
 public class HelloworldApplication {
-
   public static void main(String[] args) {
     SpringApplication.run(HelloworldApplication.class, args);
   }
-
-  @Bean
-  HttpSpanInjector istioHttpSpanInjector() {
-    return new IstioHttpSpanInjector();
-  }
-
-  @Bean
-  HttpSpanExtractor istioHttpSpanExtractor() {
-    return new IstioHttpSpanExtractor();
-  }
-
 }
 
 @RestController
 class HelloworldController {
-  
-  @Value("${version}")
-  public String version = "1.0";
+  private static final Logger log = LoggerFactory.getLogger(HelloworldController.class);
+
+  @Value("${version:1.0}")
+  public String version;
 
   @GetMapping("/hello/{name}")
   public Map<String, String> hello(@Value("${greeting}") String greetingTemplate, @PathVariable String name) throws UnknownHostException {
+  	log.info("Recevied hello request for: " + name);
     Map<String, String> response = new HashMap<>();
 
     String hostname = InetAddress.getLocalHost().getHostName();

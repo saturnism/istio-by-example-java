@@ -19,17 +19,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example.guestbook</groupId>
-	<artifactId>guestbook-example</artifactId>
+	<artifactId>spring-boot2-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>guestbook-example</name>
-	<description>Demo project for Spring Boot and Istio</description>
+	<description>Demo project for Spring Boot 2 and Istio</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.3.RELEASE</version>
+		<version>2.0.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -37,7 +37,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Dalston.RELEASE</spring-cloud.version>
+		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<docker.image.prefix>saturnism</docker.image.prefix>
 	</properties>
 
@@ -107,10 +107,22 @@
 		</pluginManagement>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<modules>
 		<module>helloworld-service</module>
 		<module>guestbook-service</module>
 		<module>guestbook-ui</module>
-		<module>spring-istio-support</module>
+		<module>work-server</module>
+		<module>meeting-server</module>
 	</modules>
 </project>

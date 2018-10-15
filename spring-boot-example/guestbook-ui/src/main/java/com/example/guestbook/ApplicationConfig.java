@@ -31,23 +31,11 @@
  */
 package com.example.guestbook;
 
-import com.example.istio.HeaderPropagationClientHttpRequestInterceptor;
-import com.example.istio.HeaderPropagationRequestFilter;
-import com.example.istio.IstioHeaderPropagatoinRequestFilter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.DelegatingFilterProxy;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
 
 /**
  * Created by rayt on 5/1/17.
@@ -56,14 +44,8 @@ import java.util.Arrays;
 @EnableRedisHttpSession
 public class ApplicationConfig {
   @Bean
-  HeaderPropagationRequestFilter headerPropagationRequestFilter() {
-    return new IstioHeaderPropagatoinRequestFilter();
-  }
-
-  @Bean
   RestTemplate restTemplate() {
     RestTemplate restTemplate = new RestTemplate();
-    restTemplate.getInterceptors().add(new HeaderPropagationClientHttpRequestInterceptor());
     return restTemplate;
   }
 
@@ -75,26 +57,5 @@ public class ApplicationConfig {
   @Bean
   GuestbookService guestbookService(RestTemplate restTemplate, @Value("${backend.guestbook-service.url}") String endpoint) {
     return new GuestbookService(restTemplate, endpoint);
-  }
-
-  @Bean
-  @Order(value = 0)
-  FilterRegistrationBean sessionRepositoryFilterRegistration(
-      SessionRepositoryFilter filter) {
-    FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(
-        new DelegatingFilterProxy(filter));
-    filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
-
-    return filterRegistrationBean;
-  }
-
-  @Bean
-  JedisConnectionFactory jedisConnectionFactory(@Value("${backend.redis-service.url}") String redisEndpoint) throws URISyntaxException {
-    URI uri = new URI(redisEndpoint);
-    JedisConnectionFactory factory = new JedisConnectionFactory();
-    factory.setHostName(uri.getHost());
-    factory.setPort(uri.getPort());
-
-    return factory;
   }
 }

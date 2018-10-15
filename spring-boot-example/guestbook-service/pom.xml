@@ -28,9 +28,8 @@
 
 	<parent>
 		<groupId>com.example.guestbook</groupId>
-		<artifactId>guestbook-example</artifactId>
+		<artifactId>spring-boot2-example</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
@@ -58,11 +57,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.example.guestbook</groupId>
-			<artifactId>spring-istio-support</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
