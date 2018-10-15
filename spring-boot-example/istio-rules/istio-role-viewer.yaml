@@ -5,11 +5,8 @@ metadata:
   namespace: default
 spec:
   rules:
-  - services: ["*"]
+  - services: ["guestbook-service", "helloworld-service", "guestbook-ui"]
     methods: ["GET", "HEAD"]
-    constraints:
-    - key: "destination.name"
-      values: ["guestbook-service", "helloworld-service", "guestbook-ui"]
 ---
 apiVersion: rbac.istio.io/v1alpha1
 kind: ServiceRoleBinding

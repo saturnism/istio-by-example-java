@@ -1,22 +1,21 @@
 apiVersion: "rbac.istio.io/v1alpha1"
 kind: ServiceRole
 metadata:
-  name: webuser
+  name: guestbook-service-rw
   namespace: default
 spec:
   rules:
-  - services: ["guestbook-ui"]
+  - services: ["guestbook-service"]
     methods: ["*"]
 ---
 apiVersion: rbac.istio.io/v1alpha1
 kind: ServiceRoleBinding
 metadata:
-  name: bind-webuser
+  name: bind-guestbook-service-rw
   namespace: default
 spec:
   subjects:
-  - properties:
-      source.namespace: istio-system
+  - user: cluster.local/ns/default/sa/guestbook-ui
   roleRef:
     kind: ServiceRole
-    name: webuser
+    name: guestbook-service-rw
