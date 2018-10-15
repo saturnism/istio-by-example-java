@@ -15,7 +15,8 @@ metadata:
   namespace: default
 spec:
   subjects:
-  - user: cluster.local/ns/default/sa/guestbook-ui
+  - properties:
+      source.principal: cluster.local/ns/default/sa/guestbook-ui
   roleRef:
     kind: ServiceRole
     name: guestbook-service-rw
