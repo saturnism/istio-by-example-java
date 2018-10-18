@@ -71,7 +71,7 @@ public class GuestbookService {
   public List<Map> allFallback() {
     Map<String, String> bulkheadEntry = new HashMap<>();
     bulkheadEntry.put("username", "system");
-    bulkheadEntry.put("message", "Guestbook Service is currenctly unavailable");
+    bulkheadEntry.put("message", "Guestbook Service is currently unavailable");
     return Arrays.asList(bulkheadEntry);
   }
 
