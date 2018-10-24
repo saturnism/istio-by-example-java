@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: guestbook-ui-v2
@@ -22,6 +22,11 @@ metadata:
     visualize: "true"
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: guestbook-ui
+      version: "2.0"
+      serving: "true"
   template:
     metadata:
       labels:
@@ -35,14 +40,17 @@ spec:
       containers:
       - name: guestbook-ui
         image: saturnism/guestbook-ui-istio:2.0
+        env:
+        - name: BACKEND_GUESTBOOK_SERVICE_URL
+          value: http://guestbook-service/messages
         livenessProbe:
           initialDelaySeconds: 60
           httpGet:
-            path: /health
+            path: /actuator/health
             port: 8080
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 8080
         ports:
         - name: http

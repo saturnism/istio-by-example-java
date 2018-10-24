@@ -1,0 +1,22 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: webuser
+  namespace: default
+spec:
+  rules:
+  - services: ["guestbook-ui.default.svc.cluster.local"]
+    methods: ["*"]
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-webuser
+  namespace: default
+spec:
+  subjects:
+  - properties:
+      source.namespace: istio-system
+  roleRef:
+    kind: ServiceRole
+    name: webuser

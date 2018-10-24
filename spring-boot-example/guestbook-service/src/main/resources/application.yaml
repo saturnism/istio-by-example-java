@@ -27,11 +27,10 @@ spring:
     test-on-borrow: true
     validation-query: SELECT 1
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       generate-ddl: true
       ddl-auto: update
       globally_quoted_identifiers: true
   sleuth:
-    sampler:
-      percentage: "1.0"
+    propagation-keys: x-request-id,x-ot-span-context

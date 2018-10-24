@@ -15,38 +15,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: guestbook-service-v1
+  name: helloworld-service-v1
   labels:
-    app: guestbook-service
+    app: helloworld-service
     version: "1.0"
     visualize: "true"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: guestbook-service
+      app: helloworld-service
       version: "1.0"
       serving: "true"
   template:
     metadata:
       labels:
-        app: guestbook-service
-        serving: "true"
+        app: helloworld-service
         version: "1.0"
+        serving: "true"
         visualize: "true"
     spec:
+      serviceAccount: helloworld-service
       containers:
-      - name: guestbook-service
-        image: saturnism/guestbook-service-istio:1.0
+      - name: helloworld-service
+        image: saturnism/helloworld-service-istio:1.0
         livenessProbe:
-          initialDelaySeconds: 90
-          httpGet:
-            path: /actuator/health
-            port: 8080
+          initialDelaySeconds: 60
+          exec:
+            command:
+            - wget
+            - -qO-
+            - http://localhost:8080/actuator/health
         readinessProbe:
-          httpGet:
-            path: /
-            port: 8080
+          exec:
+            command:
+            - wget
+            - -qO-
+            - http://localhost:8080/hello/ready
         ports:
-        - containerPort: 8080
-          name: http
+        - name: http
+          containerPort: 8080

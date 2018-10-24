@@ -31,30 +31,13 @@
  */
 package com.example.guestbook;
 
-import com.example.istio.IstioHttpSpanExtractor;
-import com.example.istio.IstioHttpSpanInjector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanExtractor;
-import org.springframework.cloud.sleuth.instrument.web.HttpSpanInjector;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-@Configuration
 public class GuestbookServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GuestbookServiceApplication.class, args);
-	}
-
-	@Bean
-	HttpSpanInjector istioHttpSpanInjector() {
-		return new IstioHttpSpanInjector();
-	}
-
-	@Bean
-	HttpSpanExtractor istioHttpSpanExtractor() {
-		return new IstioHttpSpanExtractor();
 	}
 }

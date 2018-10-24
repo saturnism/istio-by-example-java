@@ -1,0 +1,24 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: viewer
+  namespace: default
+spec:
+  rules:
+  - services: ["guestbook-service.default.svc.cluster.local", "helloworld-service.default.svc.cluster.local", "guestbook-ui.default.svc.cluster.local"]
+    methods: ["GET", "HEAD"]
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-viewer
+  namespace: default
+spec:
+  subjects:
+  - properties:
+      source.namespace: istio-system
+  - properties:
+      source.namespace: default
+  roleRef:
+    kind: ServiceRole
+    name: viewer

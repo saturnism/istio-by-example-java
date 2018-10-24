@@ -35,18 +35,23 @@ spec:
         version: "1.0"
         visualize: "true"
     spec:
+      serviceAccountName: guestbook-service
       containers:
       - name: guestbook-service
         image: saturnism/guestbook-service-istio:1.0
         livenessProbe:
           initialDelaySeconds: 90
-          httpGet:
-            path: /actuator/health
-            port: 8080
+          exec:
+            command:
+            - wget
+            - -qO-
+            - http://localhost:8080/actuator/health
         readinessProbe:
-          httpGet:
-            path: /
-            port: 8080
+          exec:
+            command:
+            - wget
+            - -qO-
+            - http://localhost:8080/
         ports:
         - containerPort: 8080
           name: http
