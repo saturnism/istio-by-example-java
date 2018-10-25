@@ -11,7 +11,6 @@
     <description>Examples of how to use Istio in Java</description>
     <modules>
       <module>spring-boot-example</module>
-      <module>spring-boot2-example</module>
       <module>jdk-example</module>
     </modules>
 </project>
