@@ -1,4 +1,4 @@
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: meeting-server
@@ -11,6 +11,7 @@ spec:
         host: meeting-server
     fault:
       abort:
-        percent: 100
+        percentage:
+          value: 100
         httpStatus: 503
 

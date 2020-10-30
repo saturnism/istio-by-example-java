@@ -15,8 +15,8 @@ spec:
     - destination:
         host: work-server
         subset: v1
-      weight: 30
+      weight: 80
     - destination:
         host: work-server
         subset: v2
-      weight: 70
+      weight: 20
